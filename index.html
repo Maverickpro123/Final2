@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Centre for Youth in Policy and Governance — CYPG</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+/* ===== RESET + TOKENS ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:inherit}
+
+:root{
+  --navy:   #0D1B5E;
+  --navy2:  #162275;
+  --green:  #1A7A3C;
+  --green2: #228B47;
+  --yellow: #E8C12A;
+  --yellow2:#F0CC40;
+  --sky:    #2B9FD6;
+  --sky2:   #3AAEE0;
+  --ink:    #1A1F2E;
+  --ink2:   #4A5368;
+  --smoke:  #F5F6FA;
+  --line:   #DDE2EE;
+  --white:  #FFFFFF;
+  --r:      4px;
+}
+
+body{
+  font-family:'IBM Plex Sans',system-ui,sans-serif;
+  color:var(--ink);background:var(--white);
+  overflow-x:hidden;line-height:1.6;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+@media(min-width:640px){.wrap{padding:0 32px}}
+@media(min-width:1024px){.wrap{padding:0 48px}}
+.sec{padding:72px 0}
+@media(min-width:768px){.sec{padding:100px 0}}
+.label{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10.5px;font-weight:600;letter-spacing:3px;
+  text-transform:uppercase;color:var(--green);margin-bottom:10px;
+}
+.label::before{content:'';width:18px;height:2px;background:var(--green)}
+.h2{
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(22px,5vw,38px);font-weight:700;
+  line-height:1.2;color:var(--navy);margin-bottom:12px;
+}
+.lead{font-size:16px;line-height:1.85;color:var(--ink2);font-family:'IBM Plex Serif',serif;font-style:italic;}
+.body-t{font-size:14px;line-height:1.8;color:var(--ink2)}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 24px;border-radius:3px;font-size:13.5px;
+  font-weight:600;letter-spacing:.3px;
+  transition:all .22s;cursor:pointer;border:2px solid transparent;
+}
+.btn-navy{background:var(--navy);color:var(--white)}
+.btn-navy:hover{background:var(--navy2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(13,27,94,.3)}
+
+/* NAVBAR */
+.nav{
+  position:sticky;top:0;z-index:900;
+  background:rgba(255,255,255,.97);
+  backdrop-filter:blur(12px);
+  border-bottom:3px solid var(--navy);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px;}
+.nav-brand{display:flex;align-items:center;gap:11px}
+.nav-logo-img{width:46px;height:46px;object-fit:cover;border-radius:50%;border:2px solid var(--navy)}
+.nav-abbr{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:var(--navy);line-height:1;}
+.nav-full{font-size:9px;color:var(--ink2);max-width:170px;margin-top:2px}
+.nav-links{display:none}
+@media(min-width:940px){
+  .nav-links{display:flex;align-items:center;gap:2px;list-style:none}
+  .nav-links a{padding:7px 11px;font-size:13px;font-weight:500;color:var(--ink);border-radius:3px;transition:color .2s;}
+  .nav-links a:hover{color:var(--navy)}
+  .nav-cta{background:var(--navy)!important;color:var(--white)!important;padding:9px 16px!important;font-weight:600!important;}
+  .nav-cta:hover{background:var(--navy2)!important;}
+}
+.hbg{display:flex;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;z-index:1101;position:relative;}
+.hbg span{width:22px;height:2px;background:var(--navy);display:block;transition:all .25s;}
+.hbg.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hbg.open span:nth-child(2){opacity:0}
+.hbg.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+@media(min-width:940px){.hbg{display:none}}
+.drawer{
+  position:fixed;top:0;right:-100%;width:280px;height:100vh;
+  background:var(--white);z-index:1100;
+  box-shadow:-4px 0 32px rgba(13,27,94,.14);
+  transition:right .28s ease;
+  padding:72px 24px 36px;
+  display:flex;flex-direction:column;
+  border-left:4px solid var(--navy);
+}
+.drawer.open{right:0}
+.drawer a{display:block;padding:13px 0;font-size:15px;font-weight:500;color:var(--ink);border-bottom:1px solid var(--line);}
+.drawer a:hover{color:var(--navy);padding-left:6px}
+.d-cta{margin-top:18px;background:var(--navy);color:var(--white)!important;text-align:center;border-radius:3px;padding:13px 0!important;border-bottom:none!important;}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1099;display:none}
+.ov.open{display:block}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:#040a1c;}
+.hero-img{position:absolute;inset:0;z-index:0;}
+.hero-img img{width:100%;height:100%;object-fit:cover;animation:kenburns 22s ease-in-out infinite alternate;opacity:.55;}
+@keyframes kenburns{0%{transform:scale(1)}100%{transform:scale(1.1)}}
+.hero-fade{position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(4,8,30,1) 0%,rgba(4,8,30,.8) 25%,rgba(4,8,30,.2) 70%,transparent 100%);}
+.hero-color-wash{position:absolute;inset:0;z-index:2;background:linear-gradient(135deg,rgba(26,122,60,.18) 0%,transparent 50%);}
+.hero-stripe{position:absolute;left:0;top:0;bottom:0;width:5px;z-index:10;display:flex;flex-direction:column;}
+.hero-stripe span:nth-child(1){flex:1;background:var(--green)}
+.hero-stripe span:nth-child(2){flex:1;background:var(--yellow)}
+.hero-stripe span:nth-child(3){flex:1;background:var(--sky)}
+.hero-content{position:relative;z-index:10;padding:0 0 72px;display:grid;gap:48px;align-items:end;}
+@media(min-width:880px){.hero-content{grid-template-columns:1fr 1fr;padding:0 0 96px;}}
+.hero-left{padding:0 12px;}
+@media(min-width:880px){.hero-left{padding-left:32px}}
+@media(max-width:600px){.hero-left{padding:0 16px;}}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:22px;opacity:0;animation:revealUp .7s .2s ease forwards;}
+.hero-eyebrow-line{width:32px;height:1px;background:var(--yellow);}
+.hero-eyebrow-text{font-size:10px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--yellow);}
+.hero-title{font-family:'Libre Baskerville',serif;font-size:clamp(32px,6.5vw,72px);font-weight:700;color:var(--white);line-height:1.04;letter-spacing:-1.5px;margin-bottom:24px;}
+.hero-title .line{display:block;opacity:0;transform:translateY(32px);}
+.hero-title .line:nth-child(1){animation:revealUp .7s .4s ease forwards}
+.hero-title .line:nth-child(2){animation:revealUp .7s .6s ease forwards}
+.hero-title .line:nth-child(3){animation:revealUp .7s .8s ease forwards}
+.hero-title em{font-style:italic;color:transparent;-webkit-text-stroke:1.5px var(--yellow);}
+.hero-divider{width:0;height:2px;background:linear-gradient(90deg,var(--green),var(--yellow),var(--sky));margin-bottom:24px;animation:lineGrow .9s 1s ease forwards;}
+.hero-desc{font-family:'IBM Plex Serif',serif;font-size:clamp(14px,2vw,17px);font-style:italic;color:rgba(255,255,255,.75);line-height:1.85;margin-bottom:36px;max-width:520px;opacity:0;animation:revealUp .7s 1s ease forwards;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:revealUp .7s 1.2s ease forwards;}
+.hero-btn-primary{display:inline-flex;align-items:center;gap:10px;background:var(--yellow);color:var(--navy);padding:14px 28px;border-radius:3px;font-size:13.5px;font-weight:700;}
+.hero-btn-ghost{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--white);padding:14px 28px;border-radius:3px;border:1.5px solid rgba(255,255,255,.35);}
+.hero-right{display:flex;flex-direction:column;gap:16px;opacity:0;animation:revealRight .9s 1s ease forwards;}
+@media(max-width:879px){.hero-right{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 16px;}}
+.hero-stat{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);border-left:3px solid var(--green);border-radius:4px;padding:16px 12px;backdrop-filter:blur(8px);}
+.hero-stat:nth-child(2){border-left-color:var(--yellow)}
+.hero-stat:nth-child(3){border-left-color:var(--sky)}
+.hero-stat-n{font-family:'Libre Baskerville',serif;font-size:clamp(24px,4vw,40px);font-weight:700;color:var(--white);line-height:1;}
+.hero-stat-l{font-size:11px;color:rgba(255,255,255,.55);letter-spacing:.3px}
+.hero-scroll{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;animation:revealUp .7s 1.8s ease forwards;}
+.scroll-mouse{width:22px;height:34px;border-radius:12px;border:1.5px solid rgba(255,255,255,.25);position:relative;}
+.scroll-dot{width:3px;height:7px;background:var(--yellow);border-radius:2px;position:absolute;top:5px;left:50%;transform:translateX(-50%);animation:scrollBounce 1.8s ease infinite;}
+@keyframes scrollBounce{0%{top:5px}80%{top:18px}100%{top:5px}}
+@keyframes revealUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes revealRight{from{opacity:0;transform:translateX(32px)}to{opacity:1;transform:translateX(0)}}
+@keyframes lineGrow{from{transform:scaleX(0);opacity:0}to{transform:scaleX(1);opacity:1}}
+
+/* ABOUT */
+.about-sec{background:var(--smoke)}
+.about-g{display:grid;gap:44px;align-items:center}
+@media(min-width:768px){.about-g{grid-template-columns:1fr 1fr}}
+.img-stack{position:relative;height:340px}
+@media(min-width:640px){.img-stack{height:440px}}
+.im{position:absolute;top:0;left:0;width:80%;height:76%;border-radius:var(--r);overflow:hidden;box-shadow:0 14px 40px rgba(13,27,94,.16);}
+.is{position:absolute;bottom:0;right:0;width:54%;height:50%;border-radius:var(--r);overflow:hidden;box-shadow:0 6px 22px rgba(13,27,94,.12);border:3px solid var(--white);}
+.ibadge{position:absolute;top:18px;right:16px;z-index:2;background:var(--navy);color:var(--white);padding:12px 16px;border-radius:3px;text-align:center;border-top:3px solid var(--yellow);}
+.ib-n{font-family:'Libre Baskerville',serif;font-size:24px;font-weight:700;color:var(--yellow2);line-height:1}
+.ib-t{font-size:9px;color:rgba(255,255,255,.6);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+.pillars{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:26px}
+.pillar{background:var(--white);border:1px solid var(--line);border-top:3px solid var(--navy);border-radius:var(--r);padding:16px;}
+.pillar:nth-child(1){border-top-color:var(--green)}
+.pillar:nth-child(2){border-top-color:var(--yellow)}
+.pillar:nth-child(3){border-top-color:var(--sky)}
+.pillar:nth-child(4){border-top-color:var(--navy)}
+.pi .material-icons{font-size:20px;color:var(--navy);margin-bottom:6px}
+.pn{font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:3px}
+.pd{font-size:12px;color:var(--ink2);line-height:1.55}
+
+/* PROGRAMS */
+.prog-g{display:grid;gap:22px;margin-top:44px}
+@media(min-width:580px){.prog-g{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:880px){.prog-g{grid-template-columns:repeat(3,1fr)}}
+.prog-c{border:1px solid var(--line);border-radius:var(--r);background:var(--white);cursor:pointer;transition:transform .25s;}
+.prog-c:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(13,27,94,.12)}
+.prog-img{height:188px;overflow:hidden;position:relative}
+.prog-tag{position:absolute;top:13px;left:13px;color:white;font-size:9px;font-weight:700;padding:4px 9px;border-radius:2px;}
+.tag-g{background:var(--green)}.tag-s{background:var(--sky)}.tag-n{background:var(--navy)}
+.prog-b{padding:20px;}
+.prog-title{font-family:'Libre Baskerville',serif;font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.prog-desc{font-size:13px;color:var(--ink2);margin-bottom:14px}
+.prog-lnk{font-size:12px;font-weight:600;color:var(--navy);display:inline-flex;align-items:center;gap:5px;cursor:pointer;}
+
+/* LEADERSHIP */
+.lsec{background:var(--navy);padding:72px 0;}
+.lg{display:grid;gap:32px;margin-top:44px}
+@media(min-width:880px){.lg{grid-template-columns:1fr 2fr;gap:44px;}}
+.fc{background:rgba(255,255,255,.04);border-radius:6px;overflow:hidden;}
+.fi{height:260px;overflow:hidden}
+.fb2{padding:20px}
+.fn{font-family:'Libre Baskerville',serif;font-size:20px;color:var(--white)}
+.fp{color:var(--yellow2);font-size:12px;margin-bottom:8px}
+.fbio{font-size:13px;color:rgba(255,255,255,.7);margin-bottom:14px;line-height:1.7}
+.tg{display:grid;gap:14px}@media(min-width:580px){.tg{grid-template-columns:repeat(2,1fr)}}
+.tc{background:rgba(255,255,255,.03);border-radius:var(--r);display:flex;cursor:pointer;transition:all .2s}
+.tc:hover{background:rgba(255,255,255,.08)}
+.tci{width:84px;flex-shrink:0;overflow:hidden}
+.tcb{padding:13px}
+.tn{font-family:'Libre Baskerville',serif;font-size:13.5px;color:var(--white)}
+.tp{color:rgba(255,255,255,.5);font-size:10px;margin-top:2px}
+.adv-s{margin-top:32px}
+.adv-l{color:var(--yellow2);font-size:10px;letter-spacing:3px;margin-bottom:12px}
+.adv-r{display:flex;gap:12px;flex-wrap:wrap}
+.adv-c{background:rgba(255,255,255,.05);padding:6px 14px;border-radius:40px;font-size:12px;color:rgba(255,255,255,.7)}
+
+/* INSIGHTS */
+.inssec{background:var(--smoke);padding:72px 0}
+.ins-g{display:grid;gap:24px;margin-top:32px}
+@media(min-width:880px){.ins-g{grid-template-columns:2fr 1fr}}
+.ifeat{background:white;border-radius:8px;cursor:pointer;overflow:hidden;transition:box-shadow .2s}
+.ifeat:hover{box-shadow:0 8px 28px rgba(13,27,94,.12)}
+.ifeat img{height:220px;width:100%;object-fit:cover}
+.ifb{padding:20px}
+.ititle{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.iexc{font-size:13px;color:var(--ink2);margin-bottom:12px}
+.iread{color:var(--navy);font-weight:600;display:inline-flex;align-items:center;gap:5px}
+.ism{background:white;margin-bottom:12px;padding:12px;border-radius:8px;display:flex;gap:12px;cursor:pointer;transition:box-shadow .2s}
+.ism:hover{box-shadow:0 4px 16px rgba(13,27,94,.1)}
+.ism img{width:70px;height:70px;object-fit:cover;border-radius:4px}
+.ismtl{font-family:'Libre Baskerville',serif;font-size:13px;font-weight:700;color:var(--navy)}
+.ismd{font-size:11px;color:var(--ink2);margin-top:4px}
+
+/* EVENT BANNER */
+.event-banner{background:var(--green);padding:50px 0;}
+.event-inner{display:grid;gap:24px;align-items:center}
+@media(min-width:768px){.event-inner{grid-template-columns:auto 1fr auto;gap:32px}}
+.event-icon-wrap{width:60px;height:60px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.event-icon-wrap .material-icons{font-size:28px;color:var(--yellow2)}
+.event-label{font-size:9px;letter-spacing:3px;color:var(--yellow2);margin-bottom:6px}
+.event-title{font-family:'Libre Baskerville',serif;font-size:clamp(18px,3vw,24px);color:var(--white);}
+.event-meta{display:flex;gap:16px;margin-top:8px;flex-wrap:wrap}
+.event-meta-item{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.8)}
+.event-cta{background:var(--yellow);color:var(--navy);padding:12px 24px;border-radius:3px;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+.event-cta:hover{background:var(--yellow2);transform:translateY(-2px)}
+
+/* GALLERY */
+.galsec{background:var(--smoke);padding:72px 0}
+.galhd{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:32px;flex-wrap:wrap}
+.galg{display:grid;gap:9px;grid-template-columns:repeat(2,1fr);margin-top:24px}
+@media(min-width:640px){.galg{grid-template-columns:repeat(4,1fr);grid-template-rows:195px 195px}
+.galg .gi:first-child{grid-column:span 2;grid-row:span 2}}
+.gi{position:relative;overflow:hidden;border-radius:3px;cursor:pointer;height:150px}
+@media(min-width:640px){.gi{height:auto}}
+.gi img{height:100%;transition:transform .5s}
+.gi:hover img{transform:scale(1.05)}
+.gov{position:absolute;inset:0;background:linear-gradient(to top,rgba(13,27,94,.8) 0%,transparent 60%);opacity:0;transition:opacity .28s;display:flex;align-items:flex-end;padding:12px}
+.gi:hover .gov{opacity:1}
+.gcap{font-size:11px;color:white;font-weight:500}
+
+/* CONTACT */
+.cg{display:grid;gap:36px;margin-top:32px}
+@media(min-width:768px){.cg{grid-template-columns:1fr 1.6fr}}
+.ci{display:flex;gap:13px;align-items:center;padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+.cico{width:38px;height:38px;background:var(--smoke);border:2px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--navy)}
+.cil{font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink2);opacity:.6}
+.civ{font-size:13.5px;font-weight:500;color:var(--ink)}
+.fw{background:var(--smoke);border:1px solid var(--line);border-top:4px solid var(--navy);border-radius:var(--r);padding:24px}
+@media(min-width:480px){.fw{padding:32px}}
+.ftitle{font-family:'Libre Baskerville',serif;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:12px}
+.fgg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.fgg label{font-size:11.5px;font-weight:600;color:var(--ink)}
+.fgg input,.fgg textarea{font-size:13.5px;color:var(--ink);background:var(--white);border:1px solid var(--line);border-radius:3px;padding:10px 12px;outline:none}
+.fgg input:focus,.fgg textarea:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(13,27,94,.07)}
+.fgg textarea{min-height:80px}
+.fsub-btn{width:100%;background:var(--navy);color:var(--white);border:none;padding:12px;font-weight:600;border-radius:3px;cursor:pointer;transition:all .2s}
+.fsub-btn:hover{background:var(--navy2);transform:translateY(-1px)}
+
+/* FOOTER */
+.footer{background:var(--navy);color:white;margin-top:0}
+.footer-inner{padding:40px 0}
+.fg2{display:grid;gap:32px;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,.1)}
+@media(min-width:900px){.fg2{grid-template-columns:2fr 1fr 1fr}}
+.fba{font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700}
+.fbd{font-size:12px;color:rgba(255,255,255,.5);margin-top:8px}
+.fch{font-size:10px;letter-spacing:2.5px;color:var(--yellow2);margin-bottom:16px}
+.flinks{list-style:none}
+.flinks li{margin-bottom:8px}
+.flinks a{font-size:12px;color:rgba(255,255,255,.5);transition:color .2s}
+.flinks a:hover{color:white}
+.fbot{padding-top:24px;text-align:center;font-size:11px;color:rgba(255,255,255,.4)}
+
+/* MODALS */
+.modal-overlay{position:fixed;inset:0;background:rgba(4,8,30,.95);z-index:2000;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;visibility:hidden;transition:opacity .28s;}
+.modal-overlay.active{opacity:1;visibility:visible}
+.modal-box{background:white;border-radius:6px;width:100%;max-width:720px;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform .28s;}
+.modal-overlay.active .modal-box{transform:translateY(0)}
+.modal-header{padding:24px 28px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.modal-title{font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:var(--navy)}
+.modal-close{cursor:pointer;font-size:28px;background:none;border:none;color:var(--ink2)}
+.modal-body{padding:28px}
+.modal-img{width:100%;height:200px;object-fit:cover;border-radius:4px;margin:16px 0}
+.modal-body h3{margin-top:20px;margin-bottom:8px;color:var(--navy)}
+.modal-body p{margin-bottom:12px;color:var(--ink2);line-height:1.7}
+
+.btn-navy-inline{background:var(--navy);color:white;padding:10px 20px;border-radius:3px;display:inline-block;margin-top:16px;font-size:13px;font-weight:600;border:none;cursor:pointer}
+
+/* SLIDEABLE GALLERY MODAL */
+.gallery-slider{position:relative;margin-bottom:20px}
+.slider-container{position:relative;overflow:hidden;border-radius:8px}
+.slider-track{display:flex;transition:transform 0.4s ease}
+.slide-img{flex-shrink:0;width:100%;height:350px;object-fit:cover}
+.slider-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);color:white;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10}
+.slider-prev{left:10px}
+.slider-next{right:10px}
+.slider-dots{display:flex;justify-content:center;gap:8px;margin-top:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:#ccc;cursor:pointer}
+.dot.active{background:var(--navy);width:20px;border-radius:4px}
+.gallery-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+.thumb-img{height:70px;object-fit:cover;border-radius:4px;cursor:pointer;opacity:.6;transition:opacity .2s}
+.thumb-img.active-thumb{opacity:1;border:2px solid var(--navy)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a href="#" class="nav-brand">
+      <img class="nav-logo-img" src="IMG-20260322-WA0041 - Copy.jpg" alt="CYPG">
+      <div><div class="nav-abbr">CYPG</div><div class="nav-full">Centre for Youth in Policy and Governance</div></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li><li><a href="#about">About</a></li><li><a href="#programs">Programs</a></li>
+      <li><a href="#leadership">Leadership</a></li><li><a href="#insights">Publications</a></li><li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact" class="nav-cta">Join CYPG</a></li>
+    </ul>
+    <button class="hbg" id="hbg"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="ov" id="ov"></div>
+<div class="drawer" id="drawer">
+  <a href="#home">Home</a><a href="#about">About CYPG</a><a href="#programs">Programs</a>
+  <a href="#leadership">Leadership</a><a href="#insights">Publications</a><a href="#gallery">Gallery</a>
+  <a href="#contact" class="d-cta">Join CYPG</a>
+</div>
+
+<!-- HERO SECTION -->
+<section class="hero" id="home">
+  <div class="hero-img"><img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=1800&auto=format" alt="Tanzania Parliament"></div>
+  <div class="hero-fade"></div><div class="hero-color-wash"></div>
+  <div class="hero-stripe"><span></span><span></span><span></span></div>
+  <div class="wrap hero-content">
+    <div class="hero-left">
+      <div class="hero-eyebrow"><div class="hero-eyebrow-line"></div><span class="hero-eyebrow-text">Youth Policy Platform · Tanzania</span></div>
+      <h1 class="hero-title"><span class="line">Empowering</span><span class="line"><em>Youth</em> to Lead</span><span class="line">with Purpose</span></h1>
+      <div class="hero-divider"></div>
+      <p class="hero-desc">CYPG cultivates the next generation of governance leaders — building policy literacy, institutional awareness, and ethical leadership among Tanzania's youth.</p>
+      <div class="hero-actions"><a href="#programs" class="hero-btn-primary">Explore Programs</a><a href="#about" class="hero-btn-ghost">Our Mission</a></div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat"><div class="hero-stat-n" data-count="580" data-suffix="+">0</div><div class="hero-stat-l">Youth Members Engaged</div></div>
+      <div class="hero-stat"><div class="hero-stat-n" data-count="14" data-suffix="+">0</div><div class="hero-stat-l">Policy Programs & Initiatives</div></div>
+      <div class="hero-stat"><div class="hero-stat-n" data-count="8" data-suffix="">0</div><div class="hero-stat-l">Regions Reached</div></div>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-mouse"><div class="scroll-dot"></div></div><span>Scroll</span></div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section class="about-sec sec" id="about"><div class="wrap"><div class="about-g"><div class="img-stack"><div class="im"><img src="IMG-20260322-WA0041.jpg" alt="Youth Forum"></div><div class="is"><img src="IMG-20260401-WA0038.jpg" alt="Workshop"></div><div class="ibadge"><div class="ib-n">2024</div><div class="ib-t">Founded</div></div></div><div><div class="label">Who We Are</div><h2 class="h2">An Intellectual Platform for Tanzania's Future Leaders</h2><p class="lead">CYPG bridges the gap between academia, institutions, and youth — preparing a generation to lead with competence and integrity.</p><div class="pillars"><div class="pillar"><div class="pi"><span class="material-icons">menu_book</span></div><div class="pn">Policy Literacy</div><div class="pd">Understanding policy processes, regulatory systems and governance frameworks.</div></div><div class="pillar"><div class="pi"><span class="material-icons">account_balance</span></div><div class="pn">Institutional Awareness</div><div class="pd">How governance structures function and how youth can engage responsibly.</div></div><div class="pillar"><div class="pi"><span class="material-icons">gavel</span></div><div class="pn">Ethical Leadership</div><div class="pd">Leaders who strengthen — not undermine — public institutions.</div></div><div class="pillar"><div class="pi"><span class="material-icons">public</span></div><div class="pn">Civic Engagement</div><div class="pd">Connecting Tanzanian youth with national and continental policy discourse.</div></div></div></div></div></div></section>
+
+<!-- PROGRAMS SECTION -->
+<section class="sec" id="programs"><div class="wrap"><div class="label">What We Do</div><h2 class="h2">Programs & Initiatives</h2><p class="lead">Structured pathways for youth to engage with governance, policy, and institutional leadership.</p><div class="prog-g"><div class="prog-c" data-cta="Youth Policy Institute"><div class="prog-img"><img src="IMG-20260402-WA0070.jpg" alt="Policy Training"><div class="prog-tag tag-g">Flagship</div></div><div class="prog-b"><div class="prog-title">Youth Policy Institute</div><div class="prog-desc">A structured training program covering public policy analysis, legislative processes, and governance systems tailored for young Tanzanians.</div><div class="prog-lnk">Learn More <span class="material-icons" style="font-size:14px">arrow_forward</span></div></div></div><div class="prog-c" data-cta="Governance Leadership Fellowship"><div class="prog-img"><img src="IMG-20260402-WA0075.jpg" alt="Fellowship"><div class="prog-tag tag-s">Fellowship</div></div><div class="prog-b"><div class="prog-title">Governance Leadership Fellowship</div><div class="prog-desc">A competitive fellowship placing emerging leaders within government institutions, civil society organisations, and policy think tanks.</div><div class="prog-lnk">Learn More <span class="material-icons" style="font-size:14px">arrow_forward</span></div></div></div><div class="prog-c" data-cta="Policy Research & Publications"><div class="prog-img"><img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=700" alt="Research"><div class="prog-tag tag-n">Research</div></div><div class="prog-b"><div class="prog-title">Policy Research & Publications</div><div class="prog-desc">Youth-led research producing policy briefs, position papers, and analytical reports on Tanzania's governance landscape.</div><div class="prog-lnk">Learn More <span class="material-icons" style="font-size:14px">arrow_forward</span></div></div></div></div></div></section>
+
+<!-- LEADERSHIP SECTION -->
+<section class="lsec" id="leadership"><div class="wrap"><div class="label">Our People</div><h2 class="h2" style="color:white">Leadership & Team</h2><p class="lead" style="color:rgba(255,255,255,.6);margin-bottom:32px">Led by a committed team of young governance professionals with a shared conviction: informed youth are the foundation of resilient institutions.</p><div class="lg"><div class="fc"><div class="fi" style="height: 260px; overflow: hidden; display: flex; align-items: flex-start;"><img src="photo_2026-04-07_14-24-43.jpg" alt="Shedrack Elisa Zadock" style="width: 100%; height: auto; object-fit: cover; object-position: top 10% center; transform: scale(1.05);"></div>
+  <div class="fb2"><div class="fn">Shedrack Elisa Zadock</div><div class="fp">Founder & Chief Executive Officer</div><div class="fbio">Shedrack is a forward-thinking youth policy advocate with a strong interest in economic policy, governance systems, investment promotion, and international cooperation. Through CYPG, he leads efforts to create structured platforms for youth engagement in governance and economic development. He is also author of "Redefining Economics and Finance for Humanity" — a conceptual framework introducing Time as Capital, Climate-Indexed Currency, and Peace as Currency.</div><button class="modal-cta-outline" id="founderStatementBtn" style="background:transparent;border:1px solid var(--yellow);color:var(--yellow);padding:6px 12px;font-size:12px;margin-top:8px;border-radius:3px;cursor:pointer;">Read Founder's Statement</button></div></div><div><div class="tg"><div class="tc" data-leader="Raphael Onesmo Mbise"><div class="tci"><img src="photo_2026-04-07_14-24-35.jpg" alt="Raphael Mbise"></div><div class="tcb"><div class="tn">Raphael Onesmo Mbise</div><div class="tp">Director of Partnerships & Resource Mobilization</div></div></div><div class="tc" data-leader="Julian Julius"><div class="tci"><img src="photo_2026-04-07_14-24-24.jpg" alt="Julian Julius"></div><div class="tcb"><div class="tn">Julian Julius</div><div class="tp">Director of Communication & Public Affairs</div></div></div><div class="tc" data-leader="Collin A. Mrema"><div class="tci"><img src="photo_2026-04-07_14-25-24.jpg" alt="Collin Mrema"></div><div class="tcb"><div class="tn">Collin A. Mrema</div><div class="tp">Secretary General</div></div></div><div class="tc" data-leader="Charleen Kinasha"><div class="tci"><img src="photo_2026-04-07_14-25-01.jpg" alt="Charleen Kinasha"></div><div class="tcb"><div class="tn">Charleen Kinasha</div><div class="tp">Director of Finance & Administration</div></div></div><div class="tc" data-leader="Amanjuma"><div class="tci"><img src="photo_2026-04-07_14-25-11.jpg" alt="Amanjuma"></div><div class="tcb"><div class="tn">Aman Ally juma</div><div class="tp">Director of Programs & Projects</div></div></div><div class="tc" data-leader="Fina Benny"><div class="tci"><img src="photo_2026-04-07_14-24-29.jpg" alt="Fina Benny"></div><div class="tcb"><div class="tn">Fina Benny</div><div class="tp">Director of Research & Policy</div></div></div></div><div class="adv-s"><div class="adv-l">Advisory Council</div><div class="adv-r"><div class="adv-c">Prof. Baraka Lema</div><div class="adv-c">Dr. Neema Chirwa</div><div class="adv-c">Amos Msuya, Esq.</div></div></div></div></div></div></section>
+
+<!-- INSIGHTS SECTION -->
+<section class="inssec" id="insights"><div class="wrap"><div class="label">Think Tank</div><h2 class="h2">Insights & Publications</h2><p class="lead">Policy briefs, research papers, and commentary — shaping the conversation on youth and governance in East Africa.</p><div class="ins-g"><div class="ifeat" data-modal="insight-1"><img src="IMG-20260402-WA0076.jpg" alt="Policy Brief"><div class="ifb"><div class="ititle">Youth Participation in Tanzania's Decentralisation Reforms</div><div class="iexc">Despite constitutional provisions for youth inclusion in local governance, structural barriers continue to limit meaningful participation.</div><div class="iread">Read Brief <span class="material-icons" style="font-size:14px">arrow_forward</span></div></div></div><div><div class="ism" data-modal="insight-2"><img src="IMG-20260402-WA0071.jpg" alt="Newsletter"><div><div class="ismtl">CYPG Policy Digest — Issue 04, 2026</div><div class="ismd">Newsletter · February 2026</div></div></div><div class="ism" data-modal="insight-3"><img src="IMG-20260401-WA0042.jpg" alt="Research"><div><div class="ismtl">Mapping Youth Voices in East African Policy Spaces</div><div class="ismd">Research Report · January 2026</div></div></div></div></div></div></section>
+
+<!-- EVENT BANNER -->
+<div class="event-banner" id="events"><div class="wrap"><div class="event-inner"><div class="event-icon-wrap"><span class="material-icons">event</span></div><div><div class="event-label">Upcoming Event</div><div class="event-title">CYPG Youth Policy, Employability & Economic Empowerment Initiative<br><span style="color:var(--yellow2)">YPEE Initiative — Cohort 1</span></div><div class="event-meta"><div class="event-meta-item"><span class="material-icons">calendar_today</span> May – June 2026</div><div class="event-meta-item"><span class="material-icons">location_on</span> Dar es Salaam-based Universities</div><div class="event-meta-item"><span class="material-icons">groups</span> Physical Attendance</div></div></div><a href="#contact" class="event-cta"><span class="material-icons">arrow_forward</span> Register Interest</a></div></div></div>
+
+<!-- GALLERY SECTION -->
+<section class="galsec" id="gallery"><div class="wrap"><div class="galhd"><div><div class="label">Media</div><h2 class="h2">Gallery</h2></div><button id="viewAllGalleryBtn" class="btn btn-navy" style="font-size:13px;padding:10px 20px">View All <span class="material-icons" style="font-size:14px">arrow_forward</span></button></div><div class="galg"><div class="gi" data-img="IMG-20260402-WA0098.jpg"><img src="IMG-20260402-WA0098.jpg" alt="Youth Forum"><div class="gov"><div class="gcap">Youth Governance Forum 2026 — Dar es Salaam</div></div></div><div class="gi" data-img="IMG-20260402-WA0099.jpg"><img src="IMG-20260402-WA0099.jpg" alt="Panel"><div class="gov"><div class="gcap">Policy Panel — February 2026</div></div></div><div class="gi" data-img="IMG-20260402-WA0118.jpg"><img src="photo_2026-04-07_14-24-54.jpg" alt="Workshop"><div class="gov"><div class="gcap">Leadership Training Workshop</div></div></div><div class="gi" data-img="IMG-20260402-WA0119.jpg"><img src="photo_2026-04-07_14-24-47.jpg" alt="Roundtable"><div class="gov"><div class="gcap">Youth Policy Roundtable</div></div></div><div class="gi" data-img="IMG-20260402-WA0070.jpg"><img src="IMG-20260402-WA0070.jpg" alt="Policy Institute"><div class="gov"><div class="gcap">Youth Policy Institute Session</div></div></div><div class="gi" data-img="IMG-20260402-WA0075.jpg"><img src="IMG-20260402-WA0075.jpg" alt="Fellowship"><div class="gov"><div class="gcap">Governance Fellowship Orientation</div></div></div><div class="gi" data-img="IMG-20260401-WA0038.jpg"><img src="IMG-20260401-WA0038.jpg" alt="Community Workshop"><div class="gov"><div class="gcap">Community Policy Workshop</div></div></div><div class="gi" data-img="IMG-20260402-WA0085.jpg"><img src="IMG-20260402-WA0085.jpg" alt="Research Meeting"><div class="gov"><div class="gcap">Policy Research Meeting</div></div></div></div></div></section>
+<!-- CONTACT SECTION -->
+<section class="sec" id="contact"><div class="wrap"><div class="label">Get Involved</div><h2 class="h2">Contact & Join CYPG</h2><p class="lead" style="margin-bottom:24px">Whether you're a student, professional, policymaker, or organisation — CYPG welcomes anyone ready to shape Tanzania's governance future.</p><div class="cg"><div><div class="ci"><div class="cico"><span class="material-icons">email</span></div><div><div class="cil">Email</div><div class="civ">centreforyouthpolicygovernance@gmail.com</div></div></div><div class="ci"><div class="cico"><span class="material-icons">phone</span></div><div><div class="cil">WhatsApp / Communication Director</div><div class="civ">+255 612 356 790</div></div></div><div class="ci"><div class="cico"><span class="material-icons">schedule</span></div><div><div class="cil">Office Hours</div><div class="civ">Monday — Friday · 8:00 AM – 5:00 PM EAT</div></div></div></div><div class="fw"><div class="ftitle">Membership & Enquiry Form</div><div class="fgg"><label>Full Name</label><input type="text" id="formName"></div><div class="fgg"><label>Email Address</label><input type="email" id="formEmail"></div><div class="fgg"><label>Message</label><textarea rows="3" id="formMsg" placeholder="Tell us about yourself and how you'd like to engage with CYPG..."></textarea></div><button class="fsub-btn" id="submitFormBtn">Submit Enquiry <span class="material-icons" style="font-size:14px">arrow_forward</span></button></div></div></div></section>
+
+<!-- FOOTER -->
+<footer class="footer"><div class="wrap footer-inner"><div class="fg2"><div><div class="fba">CYPG</div><div class="fbd">Centre for Youth in Policy and Governance — Dar es Salaam, Tanzania</div></div><div><div class="fch">Quick Links</div><ul class="flinks"><li><a href="#about">About CYPG</a></li><li><a href="#programs">Programs</a></li><li><a href="#leadership">Leadership</a></li><li><a href="#insights">Publications</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#contact">Join CYPG</a></li></ul></div><div><div class="fch">Resources</div><ul class="flinks"><li><a href="#">Policy Briefs</a></li><li><a href="#">Research Reports</a></li><li><a href="#">Newsletters</a></li><li><a href="#">Annual Reports</a></li></ul></div></div><div class="fbot"><div>© 2026 Centre for Youth in Policy and Governance (CYPG). All rights reserved.</div></div></div></footer>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-founder"><div class="modal-box"><div class="modal-header"><div class="modal-title">Founder's Statement</div><button class="modal-close" onclick="closeModal('modal-founder')">×</button></div><div class="modal-body"><p>The idea behind CYPG was born from a simple observation: many young people desire to shape society, yet few are prepared to understand the systems that govern it.</p><p>I founded CYPG on the conviction that sustainable participation in governance requires preparation before influence. When young people grasp institutional frameworks, policy processes, and regulatory systems, they engage more responsibly — moving from reactive discourse toward informed contribution.</p><p>CYPG is not simply a youth initiative. It is an intellectual platform designed to cultivate policy literacy, institutional awareness, and ethical leadership. Governance ecosystems thrive when generational continuity is nurtured deliberately. Institutions must be understood, respected, and strengthened — not approached with hostility or detachment.</p><p style="margin-top:20px"><strong>— Shedrack Elisa Zadock, Founder & CEO, CYPG</strong></p></div></div></div>
+
+<div class="modal-overlay" id="modal-leader"><div class="modal-box"><div class="modal-header"><div class="modal-title" id="leaderModalTitle">Leader Name</div><button class="modal-close" onclick="closeModal('modal-leader')">×</button></div><div class="modal-body" id="leaderModalBody"></div></div></div>
+
+<div class="modal-overlay" id="modal-insight-1"><div class="modal-box"><div class="modal-header"><div class="modal-title">Youth Participation in Decentralisation Reforms</div><button class="modal-close" onclick="closeModal('modal-insight-1')">×</button></div><div class="modal-body"><p>Despite constitutional provisions for youth inclusion in local governance, structural barriers continue to limit meaningful participation. This brief examines the 2025 Local Government Act amendments and their implications for youth engagement.</p><p>Key findings: Only 11% of ward councillors are under 35, against a 20% target. The brief recommends a Youth Governance Fund, mandatory training for young councillors, and strengthened youth advisory structures.</p><a href="#contact" class="btn-navy-inline" onclick="closeModal('modal-insight-1')">Download Full Brief</a></div></div></div>
+
+<div class="modal-overlay" id="modal-insight-2"><div class="modal-box"><div class="modal-header"><div class="modal-title">CYPG Policy Digest — Issue 04, 2026</div><button class="modal-close" onclick="closeModal('modal-insight-2')">×</button></div><div class="modal-body"><p>This issue features: YPEE Initiative Cohort 1 announcement, budget analysis for youth programs in Tanzania, upcoming governance dialogues, and a spotlight on youth-led policy research from CYPG members.</p><a href="#contact" class="btn-navy-inline" onclick="closeModal('modal-insight-2')">Subscribe to Digest</a></div></div></div>
+
+<div class="modal-overlay" id="modal-insight-3"><div class="modal-box"><div class="modal-header"><div class="modal-title">Mapping Youth Voices in East African Policy Spaces</div><button class="modal-close" onclick="closeModal('modal-insight-3')">×</button></div><div class="modal-body"><p>A comparative research study across Tanzania, Kenya, Uganda, and Rwanda examining how young people access and influence policy processes. Highlights formal versus informal participation channels, barriers to entry, and recommendations for regional harmonisation of youth policies.</p><a href="#contact" class="btn-navy-inline" onclick="closeModal('modal-insight-3')">Request Full Report</a></div></div></div>
+
+<div class="modal-overlay" id="modal-gallery-slider"><div class="modal-box" style="max-width:900px"><div class="modal-header"><div class="modal-title">CYPG Gallery</div><button class="modal-close" onclick="closeModal('modal-gallery-slider')">×</button></div><div class="modal-body"><div class="gallery-slider"><div class="slider-container"><div class="slider-track" id="gallerySliderTrack"></div><button class="slider-btn slider-prev" id="galleryPrev"><span class="material-icons">chevron_left</span></button><button class="slider-btn slider-next" id="galleryNext"><span class="material-icons">chevron_right</span></button></div><div class="slider-dots" id="galleryDots"></div></div><div class="gallery-thumbs" id="galleryThumbs"></div></div></div></div>
+
+<script>
+// MOBILE DRAWER
+const hbg=document.getElementById('hbg'), drawer=document.getElementById('drawer'), ov=document.getElementById('ov');
+function openDrawer(){hbg.classList.add('open');drawer.classList.add('open');ov.classList.add('open');document.body.style.overflow='hidden';}
+function closeDrawer(){hbg.classList.remove('open');drawer.classList.remove('open');ov.classList.remove('open');document.body.style.overflow='';}
+hbg?.addEventListener('click',()=>drawer.classList.contains('open')?closeDrawer():openDrawer());
+ov?.addEventListener('click',closeDrawer);
+document.querySelectorAll('.drawer a').forEach(a=>a.addEventListener('click',closeDrawer));
+
+// MODAL SYSTEM
+function openModal(id){const m=document.getElementById(id);if(m){m.classList.add('active');document.body.style.overflow='hidden';}}
+function closeModal(id){const m=document.getElementById(id);if(m){m.classList.remove('active');document.body.style.overflow='';}}
+window.closeModal=closeModal;
+document.querySelectorAll('.modal-overlay').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id);});});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.active').forEach(m=>closeModal(m.id));});
+
+// PROGRAM CTAs - scroll to contact section
+document.querySelectorAll('.prog-c').forEach(card=>{
+  card.addEventListener('click',(e)=>{
+    if(e.target.closest('.prog-lnk')){
+      e.preventDefault();
+      const programName = card.dataset.cta || 'Program';
+      const contactSection = document.getElementById('contact');
+      if(contactSection){
+        contactSection.scrollIntoView({behavior:'smooth'});
+        const msgField = document.getElementById('formMsg');
+        if(msgField) msgField.value = `I am interested in the ${programName}. Please send me more information.`;
+      }
+    }
+  });
+});
+
+// LEADER MODALS with detailed bios
+const leaderData = {
+  'Raphael Onesmo Mbise': {
+    title: 'Director of Partnerships and Resource Mobilization',
+    bio: `<p><strong>Raphael Onesmo Mbise</strong> is a strategic leader serving as the Director of Partnerships and Resource Mobilization at the Centre for Youth Participation and Governance (CYPG). In this role, he is responsible for designing and executing the organization's overall strategy for building sustainable partnerships, mobilizing financial and non-financial resources, and expanding CYPG's impact across Tanzania and beyond.</p>
+    <p>With a strong background in stakeholder engagement, fundraising, and strategic collaboration, Raphael leads efforts to forge meaningful alliances with government institutions, development partners, civil society organizations, private sector actors, and international donors. He focuses on identifying new funding opportunities, developing high-quality proposals, and ensuring long-term resource sustainability to support CYPG's mission of strengthening youth participation in governance and leadership.</p>
+    <p>Raphael brings a combination of analytical thinking, excellent relationship-management skills, and a deep commitment to youth empowerment. His work ensures that CYPG continues to grow its institutional capacity, diversify its funding base, and create impactful programs that amplify young people's voices in policy-making and democratic processes.</p>
+    <p>He is passionate about fostering inclusive development and believes that strategic partnerships and innovative resource mobilization are key to unlocking the full potential of Tanzania's youth.</p>`
+  },
+  'Julian Julius': {
+    title: 'Director of Communication and Public Affairs',
+    bio: `<p><strong>Julian Julius</strong> serves as the Director of Communication and Public Affairs at the Centre for Youth in Policy and Governance (CYPG).</p>
+    <p>In this role, he is responsible for overseeing the organization's communication strategies, managing public engagement, and ensuring that CYPG's vision, activities, and impact are effectively communicated to its members and the wider community.</p>
+    <p>He plays a key role in shaping the organization's public image, strengthening internal and external communication, and fostering meaningful connections that support youth participation in policy and governance.</p>
+    <p>Julian is passionate about empowering young people, promoting informed dialogue, and building platforms that amplify youth voices in decision-making processes.</p>`
+  },
+  'Collin A. Mrema': {
+    title: 'Secretary General',
+    bio: `<p><strong>Collin A. Mrema</strong> serves as Secretary General of CYPG. He oversees administrative governance, member coordination, and ensures organizational compliance with policy frameworks. His work focuses on strengthening internal systems and fostering effective communication across all CYPG departments.</p>`
+  },
+  'Charleen Kinasha': {
+    title: 'Director of Finance & Administration',
+    bio: `<p><strong>Charleen Kinasha</strong> manages financial operations, budgeting, and administrative systems ensuring institutional sustainability. With expertise in financial planning and organizational management, she ensures CYPG's resources are effectively deployed to maximize impact.</p>`
+  },
+  'Amanjuma': {
+    title: 'Director of Programs & Projects',
+    bio: `<p><strong>Amanjuma</strong> designs and implements CYPG's training programs, fellowships, and project-based initiatives. He works closely with partner organizations to deliver high-quality learning experiences for young Tanzanians interested in governance and policy.</p>`
+  },
+  'Fina Benny': {
+    title: 'Director of Research & Policy',
+    bio: `<p><strong>Fina Benny</strong> leads policy research, publication of briefs, and evidence-based governance analysis. She oversees CYPG's research agenda and ensures that policy recommendations are grounded in rigorous analysis and local context.</p>`
+  }
+};
+
+document.querySelectorAll('.tc[data-leader]').forEach(card=>{
+  card.addEventListener('click',()=>{
+    const name = card.dataset.leader;
+    const data = leaderData[name];
+    if(data){
+      document.getElementById('leaderModalTitle').textContent = name;
+      document.getElementById('leaderModalBody').innerHTML = `<p style="color:var(--yellow2);margin-bottom:12px">${data.title}</p>${data.bio}`;
+      openModal('modal-leader');
+    }
+  });
+});
+
+// FOUNDER STATEMENT
+document.getElementById('founderStatementBtn')?.addEventListener('click',()=>openModal('modal-founder'));
+
+// INSIGHT MODALS
+document.querySelectorAll('.ifeat, .ism').forEach(el=>{
+  el.addEventListener('click',()=>{
+    const modalId = el.dataset.modal;
+    if(modalId) openModal(`modal-${modalId}`);
+  });
+});
+
+// SLIDEABLE GALLERY
+const galleryImages = [
+  'IMG-20260402-WA0098.jpg', 'IMG-20260402-WA0099.jpg', 'IMG-20260402-WA0118.jpg', 'IMG-20260402-WA0119.jpg',
+  'IMG-20260402-WA0070.jpg', 'IMG-20260402-WA0075.jpg', 'IMG-20260401-WA0038.jpg', 'IMG-20260402-WA0085.jpg'
+];
+const galleryCaptions = [
+  'Youth Governance Forum 2026 — Dar es Salaam', 'Policy Panel — February 2026', 'Leadership Training Workshop', 'Youth Policy Roundtable',
+  'Youth Policy Institute Session', 'Governance Fellowship Orientation', 'Community Workshop', 'Policy Research Meeting'
+];
+
+let currentSlideIndex = 0;
+
+function buildGallerySlider(){
+  const track = document.getElementById('gallerySliderTrack');
+  const dots = document.getElementById('galleryDots');
+  const thumbs = document.getElementById('galleryThumbs');
+  if(!track) return;
+  track.innerHTML = galleryImages.map((img, idx) => 
+    `<img class="slide-img" src="${img}" alt="${galleryCaptions[idx]}" onerror="this.src='https://placehold.co/800x500?text=Image'">`
+  ).join('');
+  dots.innerHTML = galleryImages.map((_, idx) => 
+    `<div class="dot ${idx === 0 ? 'active' : ''}" data-index="${idx}"></div>`
+  ).join('');
+  thumbs.innerHTML = galleryImages.map((img, idx) => 
+    `<img class="thumb-img ${idx === 0 ? 'active-thumb' : ''}" src="${img}" data-index="${idx}" onerror="this.src='https://placehold.co/100x70?text=Image'">`
+  ).join('');
+  updateSliderPosition();
+  document.querySelectorAll('.dot').forEach(dot=>{
+    dot.addEventListener('click',()=>{
+      currentSlideIndex = parseInt(dot.dataset.index);
+      updateSlider();
+    });
+  });
+  document.querySelectorAll('.thumb-img').forEach(thumb=>{
+    thumb.addEventListener('click',()=>{
+      currentSlideIndex = parseInt(thumb.dataset.index);
+      updateSlider();
+    });
+  });
+}
+
+function updateSlider(){
+  updateSliderPosition();
+  document.querySelectorAll('.dot').forEach((dot,idx)=>{
+    if(idx===currentSlideIndex) dot.classList.add('active');
+    else dot.classList.remove('active');
+  });
+  document.querySelectorAll('.thumb-img').forEach((thumb,idx)=>{
+    if(idx===currentSlideIndex) thumb.classList.add('active-thumb');
+    else thumb.classList.remove('active-thumb');
+  });
+}
+
+function updateSliderPosition(){
+  const track = document.getElementById('gallerySliderTrack');
+  if(track) track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+}
+
+document.getElementById('galleryPrev')?.addEventListener('click',()=>{
+  currentSlideIndex = (currentSlideIndex - 1 + galleryImages.length) % galleryImages.length;
+  updateSlider();
+});
+document.getElementById('galleryNext')?.addEventListener('click',()=>{
+  currentSlideIndex = (currentSlideIndex + 1) % galleryImages.length;
+  updateSlider();
+});
+
+document.getElementById('viewAllGalleryBtn')?.addEventListener('click',()=>{
+  buildGallerySlider();
+  currentSlideIndex = 0;
+  updateSlider();
+  openModal('modal-gallery-slider');
+});
+
+// HERO COUNTER
+function animateCount(el,target,suffix){
+  let current=0, step=Math.ceil(target/50), interval=setInterval(()=>{current=Math.min(current+step,target);el.textContent=Math.floor(current)+(suffix||'');if(current>=target)clearInterval(interval);},30);
+}
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){const el=e.target;const cnt=parseInt(el.dataset.count);const suf=el.dataset.suffix||'';animateCount(el,cnt,suf);observer.unobserve(el);}});
+},{threshold:0.3});
+document.querySelectorAll('.hero-stat-n[data-count]').forEach(el=>observer.observe(el));
+
+// FORM SUBMIT
+document.getElementById('submitFormBtn')?.addEventListener('click',function(e){e.preventDefault();this.textContent='Enquiry Sent';this.disabled=true;this.style.background='var(--green)';alert('Thank you! CYPG will respond within 2 working days.');});
+</script>
+</body>
+</html>
